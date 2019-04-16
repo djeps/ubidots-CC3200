@@ -226,8 +226,12 @@ bool Ubidots::sendAll() {
   sprintf(body, "{");
   for (i = 0; i < _currentValue;) {
     _value = (val+i)->varValue; // float variable value
+    
     /* Saves variable value in str */
-    dtostrf(_value, 4, 3, str_val); // String variable value
+    //dtostrf(_value, 4, 3, str_val); // String variable value
+    int _ivalue = (int)_value;
+    sprintf(str_val, "%d.%d", _ivalue, (int)((_value -_ivalue)*1000)); // Precision of 3 decimal places
+    
     sprintf(body, "%s\"%s\":", body, (val + i)->varLabel);
     if ((val + i)->context != '\0') {
       sprintf(body, "%s{\"value\":%s, \"context\":{%s}}", body, str_val, (val + i)->context );
